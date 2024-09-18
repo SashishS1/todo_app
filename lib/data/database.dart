@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors, unnecessary_import, avoid_print
+
 import 'package:hive_flutter/hive_flutter.dart';
 
 class ToDoDataBase {
