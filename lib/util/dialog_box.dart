@@ -68,7 +68,7 @@ class _DialogBoxState extends State<DialogBox> {
               ],
             ),
 
-          //Show selected photo
+          //Show selected photos
           _image != null
             ? Image.file(
               _image!,
