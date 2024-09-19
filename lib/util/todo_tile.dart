@@ -2,17 +2,20 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'dart:io'; 
 
 class ToDoTile extends StatelessWidget {
   final String taskName;
   final bool taskCompleted;
-  Function(bool?)? onChanged;
-  Function(BuildContext)? deleteFunction;
+  final String imagePath; 
+  final Function(bool?) onChanged;
+  final Function(BuildContext) deleteFunction;
 
-  ToDoTile({
+  const ToDoTile({
     super.key,
     required this.taskName,
     required this.taskCompleted,
+    required this.imagePath, 
     required this.onChanged,
     required this.deleteFunction,
   });
@@ -27,10 +30,10 @@ class ToDoTile extends StatelessWidget {
           children: [
             SlidableAction(
               onPressed: deleteFunction,
-            icon: Icons.delete,
-            backgroundColor: Colors.red.shade300,
-            borderRadius: BorderRadius.circular(12),
-            )
+              icon: Icons.delete,
+              backgroundColor: Colors.red.shade300,
+              borderRadius: BorderRadius.circular(12),
+            ),
           ],
         ),
         child: Container(
@@ -41,21 +44,35 @@ class ToDoTile extends StatelessWidget {
           ),
           child: Row(
             children: [
-              //checkbox
+              // Show image if have
+              if (imagePath.isNotEmpty)
+                Padding(
+                  padding: const EdgeInsets.only(right: 16),
+                  child: Image.file(
+                    File(imagePath),
+                    height: 50,
+                    width: 50,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              
+              // Checkbox
               Checkbox(
                 value: taskCompleted,
                 onChanged: onChanged,
                 activeColor: Colors.black,
+              ),
+
+              // Task name
+              Expanded(
+                child: Text(
+                  taskName,
+                  style: TextStyle(
+                    decoration: taskCompleted
+                        ? TextDecoration.lineThrough
+                        : TextDecoration.none,
+                  ),
                 ),
-        
-              // task name
-              Text(
-                taskName,
-                style: TextStyle(
-                  decoration: taskCompleted
-                      ? TextDecoration.lineThrough
-                      : TextDecoration.none,
-                ), 
               ),
             ],
           ),
@@ -64,3 +81,5 @@ class ToDoTile extends StatelessWidget {
     );
   }
 }
+
+

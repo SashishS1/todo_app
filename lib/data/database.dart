@@ -3,26 +3,46 @@
 import 'package:hive_flutter/hive_flutter.dart';
 
 class ToDoDataBase {
-List toDoList = [];
+  List<List<dynamic>> toDoList = [];
 
-  //reference our box
+  // reference database
   final _myBox = Hive.box('mybox');
-  
-  // run this method if this is the 1st time ever opening this app
+
+  // first time open the app
   void createInitialData() {
     toDoList = [
-      ["Make a tutorial", false],
-      ["Do Exercise", false],
+      ['Make a tutorial', false, ''],
+      ['Do Exercise', true, ''],
     ];
+    updateDataBase();
   }
 
-  //load the data from database
+  // load database
   void loadData() {
-    toDoList = _myBox.get("TODOLIST");
+    final data = _myBox.get('TODOLIST', defaultValue: []);
+    toDoList = List<List<dynamic>>.from(data);
   }
 
-  //update the database
+  // update database
   void updateDataBase() {
-    _myBox.put("TODOLIST", toDoList);
+    _myBox.put('TODOLIST', toDoList);
+  }
+
+  // add new task
+  void addTask(String taskText, bool isCompleted, String imagePath) {
+    toDoList.add([taskText, isCompleted, imagePath]);
+    updateDataBase();
+  }
+
+  // update task
+  void updateTask(int index, String taskText, bool isCompleted, String imagePath) {
+    toDoList[index] = [taskText, isCompleted, imagePath];
+    updateDataBase();
+  }
+
+  // Remove task
+  void deleteTask(int index) {
+    toDoList.removeAt(index);
+    updateDataBase();
   }
 }
